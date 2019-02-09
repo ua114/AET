@@ -26,13 +26,25 @@ P_1 = P_01*(T_1/T_01)^(gamma/(gamma-1)); % HPC inlet pressure
 rho_1 = P_1*10^5/(R*T_1); %HPC inlet density
 %.............
 
-% Annulus dimensions at entry and exit
-r_t_entry = m_core/(pi*rho_1*C_a*(1-hub_ratio^2)); % Tip radius
+% Annulus dimensions at entry
+r_t_entry = sqrt(m_core/(pi*rho_1*C_a*(1-hub_ratio^2))); % Tip radius
 r_r_entry = hub_ratio * r_t_entry; % Root radius
 
 fprintf('Tip radius at entry of the HPC is : %f cm\n', r_t_entry *100);
+fprintf('Root radius at entry of the HPC is : %f cm\n', r_r_entry *100);
 
+V_tip = M_tip * c_cruise;
+U_t = sqrt(V_tip^2 - C_a^2);
+N = U_t/(2*pi*r_t_entry); % Rotation Frequency
+fprintf('Number of revolutions per second is: %f\n', N);
+%..............
 
+% Annulus dimensions at exit
+radius_mean = 0.5*(r_t_entry + r_r_entry);
+fprintf('Mean radius is : %f cm\n', radius_mean*100);
+
+P_02 = 13*P_01;
+T_02
 
 
 
