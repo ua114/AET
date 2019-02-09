@@ -114,7 +114,20 @@ fprintf('Reaction at stage 1 is : %1.3f\n\n', Reaction_1);
 
 % Stage 2 .....
 i = 2;
+Reaction_2 = 0.7; %Approximated
 syms b1 b2
+ eqn1 = delta_T_stage_rest == lambda_2*U*C_a/(cp*1000)*(tand(b1)-tand(b2));
+ eqn2 = Reaction_2 == C_a/(2*U)*(tand(b1)+tand(b2));
+ sol_2 = solve([eqn1, eqn2], [b1,b2]);
+ beta_1(i) = sol_2.b1;
+ beta_2(i) = sol_2.b2;
+
+alpha_1(i) = atand(U/C_a - tand(beta_1(i)));
+alpha_2(i) = atand(U/C_a - tand(beta_2(i)));
+
+Diff_2 = cosd(alpha_2(i))/cosd(alpha_1(i));
+fprintf('\nDer Haller number for stage 2 is: %1.3f\n', Diff_2);
+fprintf('Reaction at stage 2 is : %1.3f\n\n', Reaction_2);
 
 
  
