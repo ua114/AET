@@ -96,15 +96,27 @@ lambda_rest = 0.83;
 
 
 % Stage 1 ...
+i = 1;
 delta_C_w = cp*1000*delta_T_stage_1/(lambda_1*U);
 C_w_2 = delta_C_w;
-beta_2 = atand((U - C_w_2)/C_a);
-alpha_2 = atand(C_w_2/C_a);
+beta_1(i) = beta_1;
+beta_2(i) = atand((U - C_w_2)/C_a);
+alpha_1(i) = 0;
+alpha_2(i) = atand(C_w_2/C_a);
+Diff_1 = cosd(beta_1)/cosd(beta_2);
+fprintf('\nDer Haller number for stage 1 is: %1.3f\n', Diff_1);
+fprintf('(P_03/P_01)_1 = %1.3f\n', ...
+    (1+(poly_eff*delta_T_stage_1)/T_01)^3.5);
+
+Reaction_1 = 1 - C_w_2/(2*U);
+fprintf('Reaction at stage 1 is : %1.3f\n\n', Reaction_1);
+%..............
+
+% Stage 2 .....
+i = 2;
+syms b1 b2
 
 
-
-
- 
  
 
 
