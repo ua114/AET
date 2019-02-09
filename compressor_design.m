@@ -30,8 +30,8 @@ rho_1 = P_1*10^5/(R*T_1); %HPC inlet density
 r_t_entry = sqrt(m_core/(pi*rho_1*C_a*(1-hub_ratio^2))); % Tip radius
 r_r_entry = hub_ratio * r_t_entry; % Root radius
 
-fprintf('Tip radius at ENTRY of the HPC is : %f cm\n', r_t_entry *100);
-fprintf('Root radius at ENTRY of the HPC is : %f cm\n', r_r_entry *100);
+fprintf('Tip radius at ENTRY of the HPC is : %1.2f cm\n', r_t_entry *100);
+fprintf('Root radius at ENTRY of the HPC is : %1.2f cm\n', r_r_entry *100);
 
 V_tip = M_tip * c_cruise;
 U_t = sqrt(V_tip^2 - C_a^2);
@@ -41,7 +41,7 @@ N = U_t/(2*pi*r_t_entry); % Rotation Frequency
 
 % Annulus dimensions at exit
 radius_mean = 0.5*(r_t_entry + r_r_entry);
-fprintf('Mean radius is : %f cm\n', radius_mean*100);
+fprintf('Mean radius is : %1.2f cm\n', radius_mean*100);
 
 poly_eff = 0.9; % Polytropic efficiency of the HPC
 P_02 = 13*P_01;
@@ -51,17 +51,17 @@ T_2 = T_02 - C_a^2/(2*cp*1000);
 P_2 = P_02*(T_2/T_02)^(gamma/(gamma-1));
 rho_2 = P_2 * 10^5/(R*T_2);
 %fprintf('HPC outlet stagnation temerature is : %f K\n', T_02);
-fprintf('HPC outlet temerature is : %f K\n', T_2);
+fprintf('HPC outlet temerature is : %1.2f K\n', T_2);
 
 A_2 = m_core/(rho_2*C_a);
 h = A_2/(2*pi*radius_mean);
-fprintf('Exit blade height is : %f cm\n',h*100);
+fprintf('Exit blade height is : %1.3f cm\n',h*100);
 
 r_t_exit = radius_mean + h/2;
 r_r_exit = radius_mean - h/2;
 
-fprintf('Tip radius at EXIT of the HPC is : %f cm\n', r_t_exit *100);
-fprintf('Root radius at EXIT of the HPC is : %f cm\n', r_r_exit *100);
+fprintf('Tip radius at EXIT of the HPC is : %1.2f cm\n', r_t_exit *100);
+fprintf('Root radius at EXIT of the HPC is : %1.2f cm\n', r_r_exit *100);
 %..............
  
 % Estimating number of stages
@@ -75,10 +75,35 @@ V_1 = C_a/cosd(beta_1);
 V_2 = 0.72 * V_1;
 beta_2 = acosd(C_a/V_2);
 
-delta_T_os = lambda * U * C_a *(tan(beta_1) - tan(beta_2))/(cp*1000);
-fprintf('Temperature rise per stage is: %f K\n', delta_T_os);
-Stages = delta_T_0/delta_T_os;
-fprintf('Number of stages required are : %f\n', Stages+1); 
+delta_T_os = lambda * U * C_a *(tand(beta_1) - tand(beta_2))/(cp*1000);
+fprintf('Temperature rise per stage is: %1.2f K\n', delta_T_os);
+stages = delta_T_0/delta_T_os;
+fprintf('Number of stages required is : %1.0f\n', stages+2); 
+T_os =delta_T_0/(stages +2);
+fprintf('The temperature rise per stage is approximately: %1.0f\n',T_os);
+%............
+
+% Assume stage 1 and 10 have a temperature rise of 26 K and the rest ...
+... rest of the stages will have a temperature rise of 30 K
+delta_T_stage_1 = 26;
+delta_T_stage_10 = 26;
+delta_T_stage_rest = 30; 
+
+lambda_1 = 0.98;
+lambda_2 = 0.93;
+lambda_3 = 0.88;
+lambda_rest = 0.83;
+
+
+% Stage 1 ...
+delta_C_w = cp*1000*delta_T_stage_1/(lambda_1*U);
+C_w_2 = delta_C_w;
+beta_2 = atand((U - C_w_2)/C_a);
+alpha_2 = atand(C_w_2/C_a);
+
+
+
+
  
  
 
