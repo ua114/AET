@@ -30,8 +30,8 @@ rho_1 = P_1*10^5/(R*T_1); %HPC inlet density
 r_t_entry = sqrt(m_core/(pi*rho_1*C_a*(1-hub_ratio^2))); % Tip radius
 r_r_entry = hub_ratio * r_t_entry; % Root radius
 
-fprintf('Tip radius at entry of the HPC is : %f cm\n', r_t_entry *100);
-fprintf('Root radius at entry of the HPC is : %f cm\n', r_r_entry *100);
+fprintf('Tip radius at ENTRY of the HPC is : %f cm\n', r_t_entry *100);
+fprintf('Root radius at ENTRY of the HPC is : %f cm\n', r_r_entry *100);
 
 V_tip = M_tip * c_cruise;
 U_t = sqrt(V_tip^2 - C_a^2);
@@ -50,13 +50,18 @@ T_2 = T_02 - C_a^2/(2*cp*1000);
 
 P_2 = P_02*(T_2/T_02)^(gamma/(gamma-1));
 rho_2 = P_2 * 10^5/(R*T_2);
-fprintf('HPC outlet stagnation temerature is : %f K\n', T_02);
+%fprintf('HPC outlet stagnation temerature is : %f K\n', T_02);
 fprintf('HPC outlet temerature is : %f K\n', T_2);
 
 A_2 = m_core/(rho_2*C_a);
 h = A_2/(2*pi*radius_mean);
 fprintf('Exit blade height is : %f cm\n',h*100);
 
+r_t_exit = radius_mean + h/2;
+r_r_exit = radius_mean - h/2;
+
+fprintf('Tip radius at EXIT of the HPC is : %f cm\n', r_t_exit *100);
+fprintf('Root radius at EXIT of the HPC is : %f cm\n', r_r_exit *100);
 
 
 
