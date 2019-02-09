@@ -36,7 +36,7 @@ fprintf('Root radius at ENTRY of the HPC is : %f cm\n', r_r_entry *100);
 V_tip = M_tip * c_cruise;
 U_t = sqrt(V_tip^2 - C_a^2);
 N = U_t/(2*pi*r_t_entry); % Rotation Frequency
-fprintf('Number of revolutions per second is: %f\n', N);
+%fprintf('Number of revolutions per second is: %f\n', N);
 %..............
 
 % Annulus dimensions at exit
@@ -62,6 +62,25 @@ r_r_exit = radius_mean - h/2;
 
 fprintf('Tip radius at EXIT of the HPC is : %f cm\n', r_t_exit *100);
 fprintf('Root radius at EXIT of the HPC is : %f cm\n', r_r_exit *100);
+%..............
+ 
+% Estimating number of stages
+ 
+delta_T_0 = T_02 - T_01; % Rise in stagnation temperature across the HPC
+U = 2*pi*radius_mean * U_t;
+lambda = 1; % Work done factor, assume 1 at the begining
+ 
+beta_1 = atand(U/C_a);
+V_1 = C_a/cosd(beta_1);
+V_2 = 0.72 * V_1;
+beta_2 = acosd(C_a/V_2);
+
+delta_T_os = lambda * U * C_a *(tan(beta_1) - tan(beta_2))/(cp*1000);
+fprintf('Temperature rise per stage is: %f K\n', delta_T_os);
+Stages = delta_T_0/delta_T_os;
+fprintf('Number of stages required are : %f\n', Stages+1); 
+ 
+ 
 
 
 
