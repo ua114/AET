@@ -43,8 +43,21 @@ fprintf('Number of revolutions per second is: %f\n', N);
 radius_mean = 0.5*(r_t_entry + r_r_entry);
 fprintf('Mean radius is : %f cm\n', radius_mean*100);
 
+poly_eff = 0.9; % Polytropic efficiency of the HPC
 P_02 = 13*P_01;
-T_02
+T_02 = T_01 * (P_02/P_01)^((gamma -1)/(gamma*poly_eff));
+T_2 = T_02 - C_a^2/(2*cp*1000);
+
+P_2 = P_02*(T_2/T_02)^(gamma/(gamma-1));
+rho_2 = P_2 * 10^5/(R*T_2);
+fprintf('HPC outlet stagnation temerature is : %f K\n', T_02);
+fprintf('HPC outlet temerature is : %f K\n', T_2);
+
+A_2 = m_core/(rho_2*C_a);
+h = A_2/(2*pi*radius_mean);
+fprintf('Exit blade height is : %f cm\n',h*100);
+
+
 
 
 
