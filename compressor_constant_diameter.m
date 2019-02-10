@@ -63,7 +63,7 @@ fprintf('Number of revolutions per second at ENTRY is: %1.2f\n', N(1));
 %..............
 
 % Calculating annulus exit geometry
-outer_diameter = r_t_entry;
+outer_radius = r_t_entry;
 poly_eff = 0.9; % Polytropic Efficiency
 
 P_02 = 13*P_01(1);
@@ -74,5 +74,9 @@ P_2 = P_02*(T_2/T_02)^(gamma/(gamma-1));
 rho_exit = P_2 * 10^5/(R*T_2);
 A_exit = m_core/(rho_exit*C_a);
 
+r_r_exit = sqrt(outer_radius^2 - A_exit/pi);
+fprintf('Root radius at EXIT of the HPC is : %1.2f cm\n',r_r_exit * 100);
+fprintf('Exit blade length is : %1.2f cm\n', (outer_radius - r_r_exit)*100);
+hub_ratio_exit = r_r_exit/outer_radius;
 
 
