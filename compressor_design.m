@@ -82,7 +82,7 @@ fprintf('Temperature rise per stage is: %1.2f K\n', delta_T_os);
 stages = delta_T_0/delta_T_os;
 fprintf('Number of stages required is : %1.0f\n', stages+2); 
 T_os =delta_T_0/(stages +2);
-fprintf('The temperature rise per stage is approximately: %1.0f\n',T_os);
+fprintf('The temperature rise per stage is approximately: %1.0f\n\n',T_os);
 %............
 
 % Assume stage 1 and 10 have a temperature rise of 26 K and the rest ...
@@ -174,15 +174,23 @@ T_03(i) = T_01(i) + delta_T_stage(i);
 %.......
 
 % Calculating root radius and tip radius for different stages
-% r_t = zeros(1,10);  
-% r_r = zeros(1,10);
-% r_t(1) = r_t_entry*100;
-% r_r(1) = r_r_entry*100;
-% for i = 2:10
-%     T_1(i) = T_01(i)-C_a^2/(2*cp*1000);
-%     P_1(i) = P_01(i)*(T_1(i)/T_01(i))^3.5;
-%     rho(i) = P_1(i)*10^5/(R*T_1(i));
-%     r_t(i) = 100*sqrt(m_core/(pi*rho(i)*C_a*(1-hub_ratio^2)));
-%     r_r(i) = r_t(i) * hub_ratio;
-% end
-
+% stator dimensions
+T_3 = zeros(1,10);
+P_3 = zeros(1,10);
+rho_3 = zeros(1,10);
+Area = zeros(1,10);
+height = zeros(1,10);
+r_t = zeros(1,10);
+r_r = zeros(1,10);
+blade_length = zeros(1,10);
+for i = 1:10
+    T_3(i) = T_03(i) - C_a^2/(2*cp*1000);
+    P_3(i) = P_03(i)*(T_3(i)/T_03(i))^(3.5);
+    rho_3 = P_3 * 10^5/(R*T_3(i));
+    Area(i) = m_core/(rho_3(i)*C_a);
+    height(i) = Area(i)/(2*pi*radius_mean);
+    r_t(i) = (radius_mean + height(i)/2)*100;
+    r_r(i) = (radius_mean - height(i)/2)*100;
+    blade_length(i) = r_t(i) - r_r(i);
+end
+disp(blade_length);
