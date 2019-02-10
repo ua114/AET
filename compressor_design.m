@@ -1,4 +1,5 @@
 clc
+clear
 % Define Variables.........
 HP_ratio = 13; % Overall HP pressure ratio
 rp_stage = 1.6; % Max pressire rise across a stage
@@ -23,11 +24,12 @@ cp = 1.01; %kJ KgK-1
 
 T_1 = T_01 - C_a^2/(2*cp*1000); % HPC inlet temperature
 P_1 = P_01*(T_1/T_01)^(gamma/(gamma-1)); % HPC inlet pressure
-rho_1 = P_1*10^5/(R*T_1); %HPC inlet density
+rho = zeros(1,20);
+rho(1) = P_1*10^5/(R*T_1); %HPC inlet density
 %.............
 
 % Annulus dimensions at entry
-r_t_entry = sqrt(m_core/(pi*rho_1*C_a*(1-hub_ratio^2))); % Tip radius
+r_t_entry = sqrt(m_core/(pi*rho(1)*C_a*(1-hub_ratio^2))); % Tip radius
 r_r_entry = hub_ratio * r_t_entry; % Root radius
 
 fprintf('Tip radius at ENTRY of the HPC is : %1.2f cm\n', r_t_entry *100);
@@ -101,7 +103,7 @@ alpha_1(i) = 0;
 alpha_2(i) = atand(C_w_2/C_a);
 Diff(i) = cosd(beta_1)/cosd(beta_2);
 Reaction(i) = 1 - C_w_2/(2*U);
-fprintf('Reaction at stage 1 is : %1.3f\n\n', Reaction(i));
+%fprintf('Reaction at stage 1 is : %1.3f\n\n', Reaction(i));
 P_change(i) = (1+poly_eff*delta_T_stage(i)/T_01(i))^3.5;
 P_03(i) = P_01(i) * P_change(i);
 T_03(i) = T_01(i) + delta_T_stage(i);
@@ -123,8 +125,8 @@ alpha_1(i) = atand(U/C_a - tand(beta_1(i)));
 alpha_2(i) = atand(U/C_a - tand(beta_2(i)));
 
 Diff(i) = cosd(alpha_2(i))/cosd(alpha_1(i)); 
-fprintf('\nDer Haller number for stage 2 is: %1.3f\n', Diff(i));
-fprintf('Reaction at stage 2 is : %1.3f\n\n', Reaction(i));
+%fprintf('\nDer Haller number for stage 2 is: %1.3f\n', Diff(i));
+%fprintf('Reaction at stage 2 is : %1.3f\n\n', Reaction(i));
 
 P_change(i) = (1+poly_eff*delta_T_stage(i)/T_01(i))^3.5;
 P_03(i) = P_01(i) * P_change(i);
@@ -170,3 +172,13 @@ P_change(i) = (1+poly_eff*delta_T_stage(i)/T_01(i))^3.5;
 P_03(i) = P_01(i) * P_change(i);
 T_03(i) = T_01(i) + delta_T_stage(i);
 %.......
+
+% Calculating root radius and tip radius for different stages
+    r_t(1) = r_t_entry*100;
+for i = 2:10
+    T_1(i) = T_01(i-1);
+    P_1(i) = P_01(i)*(T_1(i)/T_01(i))^3.5;
+    rho(i) = P_1(i)*10^5/(R*T_1(i));
+    r_t(i) = 100*sqrt(m_core/(pi*rho(i)*C_a*(1-hub_ratio^2)));
+end
+
