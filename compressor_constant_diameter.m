@@ -78,5 +78,7 @@ r_r_exit = sqrt(outer_radius^2 - A_exit/pi);
 fprintf('Root radius at EXIT of the HPC is : %1.2f cm\n',r_r_exit * 100);
 fprintf('Exit blade length is : %1.2f cm\n', (outer_radius - r_r_exit)*100);
 hub_ratio_exit = r_r_exit/outer_radius;
+%..........
 
-
+% Estimating number of stages .....
+delta_T_0 = T_02 - T_01(1); % Rise in stagnation temperature across the HPC

@@ -104,6 +104,7 @@ alpha_2(i) = atand(C_w_2/C_a);
 Diff(i) = cosd(beta_1)/cosd(beta_2);
 Reaction(i) = 1 - C_w_2/(2*U);
 %fprintf('Reaction at stage 1 is : %1.3f\n\n', Reaction(i));
+
 P_change(i) = (1+poly_eff*delta_T_stage(i)/T_01(i))^3.5;
 P_03(i) = P_01(i) * P_change(i);
 T_03(i) = T_01(i) + delta_T_stage(i);
@@ -114,7 +115,7 @@ T_01(i+1) = T_03(i);
 % Stage 2 .....
 i = 2;
 Reaction(i) = 0.7; %Approximated
-syms b1 b2
+syms b1 b2 % Calculate beta_1 and beta_2 through simultaneous equations
  eqn1 = delta_T_stage(i) == lambda(i)*U*C_a/(cp*1000)*(tand(b1)-tand(b2));
  eqn2 = Reaction(i) == C_a/(2*U)*(tand(b1)+tand(b2));
  sol_2 = solve([eqn1, eqn2], [b1,b2]);
@@ -135,8 +136,9 @@ P_01(i+1) = P_03(i);
 T_01(i+1) = T_03(i); 
 %.........
 
-% Stage 3-9;
 Reaction(3:10) = 0.5;
+
+% Stage 3-9;
 for i=3:9
   syms b1 b2
  eqn1 = delta_T_stage(i) == lambda(i)*U*C_a/(cp*1000)*(tand(b1)-tand(b2));
