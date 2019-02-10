@@ -101,17 +101,13 @@ beta_2(i) = atand((U - C_w_2)/C_a);
 alpha_1(i) = 0;
 alpha_2(i) = atand(C_w_2/C_a);
 Diff(i) = cosd(beta_1)/cosd(beta_2);
-fprintf('\nDer Haller number for stage 1 is: %1.3f\n', Diff_1);
-fprintf('(P_03/P_01)_1 = %1.3f\n', ...
-    (1+(poly_eff*delta_T_stage_1)/T_01)^3.5);
-
-Reaction_1 = 1 - C_w_2/(2*U);
-fprintf('Reaction at stage 1 is : %1.3f\n\n', Reaction_1);
+Reaction(i) = 1 - C_w_2/(2*U);
+fprintf('Reaction at stage 1 is : %1.3f\n\n', Reaction(i));
 %..............
 
 % Stage 2 .....
 i = 2;
-Reaction_2 = 0.7; %Approximated
+Reaction(i) = 0.7; %Approximated
 syms b1 b2
  eqn1 = delta_T_stage_rest == lambda(i)*U*C_a/(cp*1000)*(tand(b1)-tand(b2));
  eqn2 = Reaction_2 == C_a/(2*U)*(tand(b1)+tand(b2));
@@ -124,14 +120,15 @@ alpha_2(i) = atand(U/C_a - tand(beta_2(i)));
 
 Diff(i) = cosd(alpha_2(i))/cosd(alpha_1(i)); 
 fprintf('\nDer Haller number for stage 2 is: %1.3f\n', Diff_2);
-fprintf('Reaction at stage 2 is : %1.3f\n\n', Reaction_2);
+fprintf('Reaction at stage 2 is : %1.3f\n\n', Reaction(i));
 %.........
 
 % Stage 3-9;
+Reaction(3:10) = 0.5;
 for i=3:9
   syms b1 b2
  eqn1 = delta_T_stage_rest == lambda(i)*U*C_a/(cp*1000)*(tand(b1)-tand(b2));
- eqn2 = Reaction_2 == C_a/(2*U)*(tand(b1)+tand(b2));
+ eqn2 = Reaction(i) == C_a/(2*U)*(tand(b1)+tand(b2));
  sol_2 = solve([eqn1, eqn2], [b1,b2]);
  beta_1(i) = sol_2.b1;
  beta_2(i) = sol_2.b2;
