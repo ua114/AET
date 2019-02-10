@@ -85,16 +85,15 @@ fprintf('The temperature rise per stage is approximately: %1.0f\n',T_os);
 
 % Assume stage 1 and 10 have a temperature rise of 26 K and the rest ...
 ... rest of the stages will have a temperature rise of 30 K
-delta_T_stage_1 = 26;
-delta_T_stage_10 = 26;
-delta_T_stage_rest = 30; 
-
+delta_T_stage = [26, 30, 30, 30, 30, 30, 30, 30, 30, 26];
 lambda = [0.98, 0.93, 0.88, 0.83, 0.83, 0.83,0.83, 0.83, 0.83, 0.83];
 
 
 % Stage 1 ...
 i = 1;
-delta_C_w = cp*1000*delta_T_stage_1/(lambda(i)*U);
+T_01(i) = T_01;
+P_01(i) = P_01;
+delta_C_w = cp*1000*delta_T_stage(i)/(lambda(i)*U);
 C_w_2 = delta_C_w;
 beta_1(i) = beta_1;
 beta_2(i) = atand((U - C_w_2)/C_a);
@@ -103,14 +102,19 @@ alpha_2(i) = atand(C_w_2/C_a);
 Diff(i) = cosd(beta_1)/cosd(beta_2);
 Reaction(i) = 1 - C_w_2/(2*U);
 fprintf('Reaction at stage 1 is : %1.3f\n\n', Reaction(i));
+P_change(i) = (1+poly_eff*delta_T_stage(i)/T_01(i))^3.5;
+P_03(i) = P_01(i) * P_change(i);
+T_03(i) = T_01(i) + delta_T_stage(i);
+P_01(i+1) = P_03(i);
+T_01(i+1) = T_03(i); 
 %..............
 
 % Stage 2 .....
 i = 2;
 Reaction(i) = 0.7; %Approximated
 syms b1 b2
- eqn1 = delta_T_stage_rest == lambda(i)*U*C_a/(cp*1000)*(tand(b1)-tand(b2));
- eqn2 = Reaction_2 == C_a/(2*U)*(tand(b1)+tand(b2));
+ eqn1 = delta_T_stage(i) == lambda(i)*U*C_a/(cp*1000)*(tand(b1)-tand(b2));
+ eqn2 = Reaction(i) == C_a/(2*U)*(tand(b1)+tand(b2));
  sol_2 = solve([eqn1, eqn2], [b1,b2]);
  beta_1(i) = sol_2.b1;
  beta_2(i) = sol_2.b2;
@@ -119,15 +123,21 @@ alpha_1(i) = atand(U/C_a - tand(beta_1(i)));
 alpha_2(i) = atand(U/C_a - tand(beta_2(i)));
 
 Diff(i) = cosd(alpha_2(i))/cosd(alpha_1(i)); 
-fprintf('\nDer Haller number for stage 2 is: %1.3f\n', Diff_2);
+fprintf('\nDer Haller number for stage 2 is: %1.3f\n', Diff(i));
 fprintf('Reaction at stage 2 is : %1.3f\n\n', Reaction(i));
+
+P_change(i) = (1+poly_eff*delta_T_stage(i)/T_01(i))^3.5;
+P_03(i) = P_01(i) * P_change(i);
+T_03(i) = T_01(i) + delta_T_stage(i);
+P_01(i+1) = P_03(i);
+T_01(i+1) = T_03(i); 
 %.........
 
 % Stage 3-9;
 Reaction(3:10) = 0.5;
 for i=3:9
   syms b1 b2
- eqn1 = delta_T_stage_rest == lambda(i)*U*C_a/(cp*1000)*(tand(b1)-tand(b2));
+ eqn1 = delta_T_stage(i) == lambda(i)*U*C_a/(cp*1000)*(tand(b1)-tand(b2));
  eqn2 = Reaction(i) == C_a/(2*U)*(tand(b1)+tand(b2));
  sol_2 = solve([eqn1, eqn2], [b1,b2]);
  beta_1(i) = sol_2.b1;
@@ -135,7 +145,28 @@ for i=3:9
  alpha_1(i) = atand(U/C_a - tand(beta_1(i)));
  alpha_2(i) = atand(U/C_a - tand(beta_2(i)));
  Diff(i) = cosd(alpha_2(i))/cosd(alpha_1(i)); 
-end
-    
  
+P_change(i) = (1+poly_eff*delta_T_stage(i)/T_01(i))^3.5;
+P_03(i) = P_01(i) * P_change(i);
+T_03(i) = T_01(i) + delta_T_stage(i);
+P_01(i+1) = P_03(i);
+T_01(i+1) = T_03(i); 
+end
 
+% Stage 10
+i = 10;
+
+syms b1 b2
+ eqn1 = delta_T_stage(i) == lambda(i)*U*C_a/(cp*1000)*(tand(b1)-tand(b2));
+ eqn2 = Reaction(i) == C_a/(2*U)*(tand(b1)+tand(b2));
+ sol_2 = solve([eqn1, eqn2], [b1,b2]);
+ beta_1(i) = sol_2.b1;
+ beta_2(i) = sol_2.b2;
+ 
+alpha_1(i) = atand(U/C_a - tand(beta_1(i)));
+alpha_2(i) = atand(U/C_a - tand(beta_2(i)));
+Diff(i) = cosd(alpha_2(i))/cosd(alpha_1(i));
+P_change(i) = (1+poly_eff*delta_T_stage(i)/T_01(i))^3.5;
+P_03(i) = P_01(i) * P_change(i);
+T_03(i) = T_01(i) + delta_T_stage(i);
+%.......
