@@ -24,7 +24,7 @@ cp = 1.01; %kJ KgK-1
 
 T_1 = T_01 - C_a^2/(2*cp*1000); % HPC inlet temperature
 P_1 = P_01*(T_1/T_01)^(gamma/(gamma-1)); % HPC inlet pressure
-rho = zeros(1,20);
+rho = zeros(1,10);
 rho(1) = P_1*10^5/(R*T_1); %HPC inlet density
 %.............
 
@@ -174,11 +174,15 @@ T_03(i) = T_01(i) + delta_T_stage(i);
 %.......
 
 % Calculating root radius and tip radius for different stages
-    r_t(1) = r_t_entry*100;
-for i = 2:10
-    T_1(i) = T_01(i-1);
-    P_1(i) = P_01(i)*(T_1(i)/T_01(i))^3.5;
-    rho(i) = P_1(i)*10^5/(R*T_1(i));
-    r_t(i) = 100*sqrt(m_core/(pi*rho(i)*C_a*(1-hub_ratio^2)));
-end
+% r_t = zeros(1,10);  
+% r_r = zeros(1,10);
+% r_t(1) = r_t_entry*100;
+% r_r(1) = r_r_entry*100;
+% for i = 2:10
+%     T_1(i) = T_01(i)-C_a^2/(2*cp*1000);
+%     P_1(i) = P_01(i)*(T_1(i)/T_01(i))^3.5;
+%     rho(i) = P_1(i)*10^5/(R*T_1(i));
+%     r_t(i) = 100*sqrt(m_core/(pi*rho(i)*C_a*(1-hub_ratio^2)));
+%     r_r(i) = r_t(i) * hub_ratio;
+% end
 
