@@ -38,7 +38,7 @@ fprintf('Root radius at ENTRY of the HPC is : %1.2f cm\n', r_r_entry *100);
 V_tip = M_tip * c_cruise;
 U_t = sqrt(V_tip^2 - C_a^2);
 N = U_t/(2*pi*r_t_entry); % Rotation Frequency
-%fprintf('Number of revolutions per second is: %f\n', N);
+fprintf('Number of revolutions per second is: %1.2f\n', N);
 %..............
 
 % Annulus dimensions at exit
@@ -193,4 +193,5 @@ for i = 1:10
     r_r(i) = (radius_mean - height(i)/2)*100;
     blade_length(i) = r_t(i) - r_r(i);
 end
+disp('The length of the blades is:')
 disp(blade_length);
