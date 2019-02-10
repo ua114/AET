@@ -1,6 +1,7 @@
 clc
 clear
 % Define Variables.........
+n = 10;
 HP_ratio = 13; % Overall HP pressure ratio
 C_a = 170; 
 m_core = 7.817; %Mass flow rate in the core in kg/s
@@ -11,29 +12,29 @@ c_cruise = 310; % Speed of sound at cruise altitude
 %..................
 
 % Preallocation of variables
-T_1 = zeros(1,10);
-T_01 = zeros(1,10);
-P_1 = zeros(1,10);
-P_01 = zeros(1,10);
+T_1 = zeros(1,n);
+T_01 = zeros(1,n);
+P_1 = zeros(1,n);
+P_01 = zeros(1,n);
 
-% T_2 = zeros(1,10);
-% T_02 = zeros(1,10);
-% P_2 = zeros(1,10);
-% P_02 = zeros(1,10);
+% T_2 = zeros(1,n);
+% T_02 = zeros(1,n);
+% P_2 = zeros(1,n);
+% P_02 = zeros(1,n);
 
-T_3 = zeros(1,10);
-T_03 = zeros(1,10);
-P_3 = zeros(1,10);
-P_03 = zeros(1,10);
+T_3 = zeros(1,n);
+T_03 = zeros(1,n);
+P_3 = zeros(1,n);
+P_03 = zeros(1,n);
 
-rho_1 = zeros(1,10);
-rho_2 = zeros(1,10);
-rho_3 = zeros(1,10);
+rho_1 = zeros(1,n);
+rho_2 = zeros(1,n);
+rho_3 = zeros(1,n);
 
-U_t = zeros(1,10);
-U = zeros(1,10);
+U_t = zeros(1,n);
+U = zeros(1,n);
 
-Area = zeros(1,10);
+Area = zeros(1,n);
 %........
 
 % Air properties 
