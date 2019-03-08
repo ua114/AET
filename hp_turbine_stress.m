@@ -1,0 +1,6 @@
+clc
+% Define Variables.........
+rev = 431.39;
+%................
+
+omega = rev * 2*pi;
