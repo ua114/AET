@@ -42,12 +42,14 @@ r_ratio(i) = r(i)/R_0;
 % Plotting tools........
 r_ratio_fine = linspace(min(r_ratio),max(r_ratio),500);
 hold on
-plot(r_ratio,sigma_r,'ko')%,'MarkerIndices',1:1:length(sigma_r)),
-plot(r_ratio_fine,spline(r_ratio,sigma_r,r_ratio_fine),'k')%,'-o','MarkerIndices',1:1:length(sigma_r)),
+plot(r_ratio,sigma_r,'ko')
+plot(r_ratio_fine,spline(r_ratio,sigma_r,r_ratio_fine),'k')
+plot(r_ratio,sigma_theta,'mo')
+plot(r_ratio_fine,spline(r_ratio,sigma_theta,r_ratio_fine),'m')
 xlabel('r/R_0'), ylabel('Stress (MPa)')
 title('Radial and Hoop Stresses VS radial location')
 xlim([min(r_ratio),max(r_ratio)])
-ylim([0, max(sigma_r)+20])
+ylim([0,max(sigma_theta)])
 hold off
 
     
