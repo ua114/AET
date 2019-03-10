@@ -1,4 +1,6 @@
 clc
+cla
+clear
 % Define Variables.........
 rev = 431.39; % rev/s
 N = 43; % Number of blades
@@ -21,7 +23,7 @@ fprintf('Force exerted by each blade on the disc: %1.0f kN\n', F_rim/1000);
 
 
 i = 1:10;
-r(i) = (0.2-0.1)/10 * i + 0.1;
+r(i) = (0.2-0.1)/10 * (i-1) + 0.1;
 
 % Radial stress in MPa......
 sigma_r(i) = ((3+nu)/8 * rho * Omega^2 * (R_i^2 + R_0^2 - ...
@@ -38,8 +40,14 @@ sigma_theta(i) = ((3+nu)/8 * rho * Omega^2 * (R_i^2 + R_0^2 + ...
 r_ratio(i) = r(i)/R_0;
 
 % Plotting tools........
-plot(r_ratio,sigma_r),
+r_ratio_fine = linspace(min(r_ratio),max(r_ratio),500);
+hold on
+plot(r_ratio,sigma_r,'ko')%,'MarkerIndices',1:1:length(sigma_r)),
+plot(r_ratio_fine,spline(r_ratio,sigma_r,r_ratio_fine),'k')%,'-o','MarkerIndices',1:1:length(sigma_r)),
 xlabel('r/R_0'), ylabel('Stress (MPa)')
 title('Radial and Hoop Stresses VS radial location')
+xlim([min(r_ratio),max(r_ratio)])
+ylim([0, max(sigma_r)+20])
+hold off
 
     
