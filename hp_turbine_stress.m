@@ -9,7 +9,7 @@ R_0 = 0.2; % m, outer diameter of disc
 R_i = 0.1; % m, inner diamter of disc 
 h = 5/1000; % m, blade thickness
 width = 22/1000; %m, blade width
-rho = 8193; % kg/m3, density of high strength nickel-chromium alloy
+rho = 4595; % kg/m3, density of high strength nickel-chromium alloy
 nu = 0.3; % Poisson ratio
 %................
 
@@ -22,7 +22,7 @@ F_rim = m_blade * Omega^2 * r_blade; % N, force exerted by each blade
 fprintf('Force exerted by each blade on the disc: %1.0f kN\n', F_rim/1000);
 
 
-i = 1:10;
+i = 1:11;
 r(i) = (0.2-0.1)/10 * (i-1) + 0.1;
 
 % Radial stress in MPa......
@@ -50,6 +50,7 @@ xlabel('r/R_0'), ylabel('Stress (MPa)')
 title('Radial and Hoop Stresses VS radial location')
 xlim([min(r_ratio),max(r_ratio)])
 ylim([0,max(sigma_theta)])
+set(gca,'FontSize',20)
 hold off
 
     
