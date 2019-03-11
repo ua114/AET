@@ -20,8 +20,8 @@ W_cruise = W_initial - 0.05*W_Fuel; % 5 fuel used up at takeoff
 
 LD = 18; % L/d
 thrust = W_cruise*9810/LD;
-%sfc = 0.3752/thrust;
-sfc = 16.22/10^6;
+sfc = 0.3752/thrust;
+%sfc = 16.22/10^6;
 speed_of_sound = 306;% m/s at 8.53 Km altitude
 V = M*speed_of_sound; % calculate flight speed
 
